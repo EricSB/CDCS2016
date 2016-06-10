@@ -1,0 +1,5 @@
+#!/bin/bash
+USER=$(echo $1 | sed 's/[^a-zA-Z]//g');
+ldapsearch -b "ou=users,dc=saxophoneguerilla,dc=com" -h ldap.saxophoneguerilla.com -x '(&(objectClass=CDCUserInfo)(uid='"$USER"'))'  'sshPublicKey' -ZZ | sed -n '/^ /{H;d};/sshPublicKey::/x;$g;s/\n *//g;s/sshPublicKey:: //gp'  | base64 --decode
+
+
